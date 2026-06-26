@@ -1,6 +1,5 @@
 import { useState } from 'react'
-import { InstUISettingsProvider, Tabs, Text, View } from '@instructure/ui'
-import { theme as canvasTheme } from '@instructure/canvas-theme'
+import { Tabs, Text, View } from '@instructure/ui'
 import Sidebar from './components/Sidebar'
 import RecordHeader from './components/RecordHeader'
 import RecordGlance from './components/RecordGlance'
@@ -35,8 +34,7 @@ export default function App() {
   const [activeTabIndex, setActiveTabIndex] = useState(0)
 
   return (
-    <InstUISettingsProvider theme={canvasTheme}>
-      <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
+    <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
         <Sidebar learner={learner} />
         <div style={{ flex: 1, overflowY: 'auto', marginLeft: '276px', background: '#F5F5F5' }}>
 
@@ -97,6 +95,5 @@ export default function App() {
 
         </div>
       </div>
-    </InstUISettingsProvider>
   )
 }
