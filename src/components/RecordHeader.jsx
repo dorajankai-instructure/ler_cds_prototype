@@ -16,7 +16,7 @@ import {
   IconShareLine,
 } from '@instructure/ui-icons'
 
-export default function RecordHeader({ recordDetail, recordGlance }) {
+export default function RecordHeader({ recordDetail }) {
   const [isPublic, setIsPublic] = useState(recordDetail.status === 'Public')
 
   return (
@@ -55,20 +55,19 @@ export default function RecordHeader({ recordDetail, recordGlance }) {
         </Flex.Item>
 
         <Flex.Item>
-          <Text size="small">{recordGlance.credentials} credentials</Text>
-        </Flex.Item>
-
-        <Flex.Item shouldGrow />
-
-        <Flex.Item>
-          <Checkbox
-            label="Public"
-            variant="toggle"
-            checked={isPublic}
-            onChange={e => setIsPublic(e.target.checked)}
-          />
+          <Text size="small">{recordDetail.views} views</Text>
         </Flex.Item>
       </Flex>
+
+      {/* Public/Private toggle row */}
+      <View as="div" margin="0 0 small 0">
+        <Checkbox
+          label="Public"
+          variant="toggle"
+          checked={isPublic}
+          onChange={e => setIsPublic(e.target.checked)}
+        />
+      </View>
 
       {/* Actions row */}
       <Flex gap="small" margin="0 0 small 0">

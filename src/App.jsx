@@ -47,10 +47,7 @@ export default function App() {
             zIndex: 10,
             boxShadow: '0 1px 0 0 #E8EAED',
           }}>
-            <RecordHeader
-              recordDetail={recordDetail}
-              recordGlance={recordGlance}
-            />
+            <RecordHeader recordDetail={recordDetail} />
           </div>
 
           {/* Tabs + content */}
