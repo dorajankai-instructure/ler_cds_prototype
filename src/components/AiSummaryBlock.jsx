@@ -1,26 +1,46 @@
 import { useState } from 'react'
 import { Button, Flex, IconButton, Tag, Text, TextArea, View } from '@instructure/ui'
 import { IconEditLine, IconResetLine } from '@instructure/ui-icons'
+import { aiSummaryAlternatives } from '../data/mariaReyes'
 
 export default function AiSummaryBlock({ summary }) {
   const [hovered, setHovered] = useState(false)
   const [editing, setEditing] = useState(false)
   const [text, setText] = useState(summary)
   const [draft, setDraft] = useState(summary)
+  // The "AI-generated" tag shows only while the summary is unchanged from the
+  // original — or after a regenerate, which produces fresh AI content.
+  const [aiGenerated, setAiGenerated] = useState(true)
 
   function startEdit() {
     setDraft(text)
     setEditing(true)
   }
 
+  function handleBlur() {
+    // On leaving the textarea, drop the tag if the draft differs from the
+    // original summary; restore it if the user reset it back to the original.
+    setAiGenerated(draft === summary)
+  }
+
   function saveEdit() {
     setText(draft)
+    setAiGenerated(draft === summary)
     setEditing(false)
   }
 
   function cancelEdit() {
     setDraft(text)
+    setAiGenerated(text === summary)
     setEditing(false)
+  }
+
+  function regenerate() {
+    const index = Math.floor(Math.random() * aiSummaryAlternatives.length)
+    const next = aiSummaryAlternatives[index]
+    setText(next)
+    setDraft(next)
+    setAiGenerated(true)
   }
 
   return (
@@ -45,7 +65,7 @@ export default function AiSummaryBlock({ summary }) {
           {/* Header row */}
           <Flex alignItems="start" margin="0 0 small 0">
             <Flex.Item shouldGrow>
-              <Tag text="AI-generated" size="small" />
+              {aiGenerated && <Tag text="AI-generated" size="small" />}
             </Flex.Item>
             {hovered && !editing && (
               <Flex.Item>
@@ -64,6 +84,7 @@ export default function AiSummaryBlock({ summary }) {
                     size="small"
                     withBackground={false}
                     withBorder={false}
+                    onClick={regenerate}
                   />
                 </div>
               </Flex.Item>
@@ -77,6 +98,7 @@ export default function AiSummaryBlock({ summary }) {
                 label="Summary"
                 value={draft}
                 onChange={e => setDraft(e.target.value)}
+                onBlur={handleBlur}
                 height="120px"
                 resize="vertical"
               />

@@ -77,6 +77,11 @@ export const recordGlance = {
 
 export const aiSummary = `Experienced healthcare professional with a nursing certificate from San José City College and verified competencies in patient care coordination and health data analysis. Holds an Associate of Science degree with academic honours and a workforce development badge in Health Information Systems from the California Workforce Development Board. Coursera certification in Data Analysis for Healthcare demonstrates applied data skills relevant to health systems management. Co-curricular record documents leadership in community health outreach across two years, including bilingual community engagement in English and Spanish. Currently seeking a transition into healthcare administration to improve the coordination and data systems that directly affect patient outcomes.`
 
+export const aiSummaryAlternatives = [
+  'Healthcare professional with three years of direct patient care experience at Valley Medical Center, transitioning into administration with verified data analysis and health information systems credentials. Bilingual in English and Spanish.',
+  'Associate of Science graduate with nursing certification and two workforce development badges in Health Information Systems and Community Health Outreach. Published community health researcher with demonstrated EHR and care coordination experience.',
+]
+
 // ─── Credentials ───────────────────────────────────────────────────────────────
 
 export const credentialSections = [
