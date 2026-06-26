@@ -1,31 +1,38 @@
 import { useState } from 'react'
-import { Flex, Tag, Text, View } from '@instructure/ui'
+import { Button, CloseButton, Flex, Heading, Modal, Tag, Text, View } from '@instructure/ui'
 import {
   IconCalendarMonthLine,
   IconClockLine,
   IconArrowOpenUpLine,
+  IconCheckMarkLine,
+  IconCheckLine,
+  IconStarLine,
 } from '@instructure/ui-icons'
 import SectionHeader from './SectionHeader'
 
 const TYPE_COLORS = {
-  'Program completion': { bg: '#E6F4EA', border: '#27AE60', text: '#1A6633' },
-  'Course completion':  { bg: '#FEF3C7', border: '#D97706', text: '#92400E' },
-  'Outcome mastery':    { bg: '#F3E8FF', border: '#7C3AED', text: '#6B21A8' },
+  'Program completion': { bg: '#E6F4EA', border: '#27AE60', text: '#1A6633', icon: '#27AE60' },
+  'Course completion':  { bg: '#FEF3C7', border: '#D97706', text: '#92400E', icon: '#D97706' },
+  'Outcome mastery':    { bg: '#F3E8FF', border: '#7C3AED', text: '#6B21A8', icon: '#7C3AED' },
 }
 
-function CompletionCard({ item }) {
-  const c = TYPE_COLORS[item.type] || { bg: '#F0F0F0', border: '#999', text: '#555' }
+const TYPE_ICONS = {
+  'Program completion': IconCheckMarkLine,
+  'Course completion':  IconCheckLine,
+  'Outcome mastery':    IconStarLine,
+}
 
+function TypeTag({ item }) {
+  const c = TYPE_COLORS[item.type] || { bg: '#F0F0F0', border: '#999', text: '#555', icon: '#777' }
+  const Icon = TYPE_ICONS[item.type]
   return (
-    <View
-      as="div"
-      background="primary"
-      borderWidth="small"
-      borderColor="primary"
-      borderRadius="medium"
-      padding="medium"
-    >
-      <View as="div" margin="0 0 x-small 0">
+    <Flex alignItems="center" gap="x-small">
+      {Icon && (
+        <Flex.Item>
+          <Icon size="x-small" style={{ color: c.icon }} />
+        </Flex.Item>
+      )}
+      <Flex.Item>
         <Tag
           text={item.type}
           size="small"
@@ -35,30 +42,104 @@ function CompletionCard({ item }) {
             defaultColor: c.text,
           }}
         />
-      </View>
-      <Text weight="bold" size="small" as="div" lineHeight="condensed">{item.name}</Text>
-      <View as="div" margin="xx-small 0 0 0">
-        <Text size="x-small" color="secondary">{item.institution}</Text>
-      </View>
-      <View as="div" margin="x-small 0 0 0">
-        <Flex alignItems="center" gap="xx-small" margin="0 0 xx-small 0">
-          <IconCalendarMonthLine size="x-small" color="secondary" />
-          <Text size="x-small" color="secondary">{item.completionDate}</Text>
+      </Flex.Item>
+    </Flex>
+  )
+}
+
+function CompletionModal({ item, onClose }) {
+  const showCredit = item.type === 'Program completion' || item.type === 'Course completion'
+  const showProficiency = item.type === 'Outcome mastery'
+
+  return (
+    <Modal open size="small" label={item.name} onDismiss={onClose} shouldCloseOnDocumentClick>
+      <Modal.Header>
+        <Flex justifyItems="space-between" alignItems="center">
+          <Flex.Item shouldGrow>
+            <Heading level="h2" margin="0">{item.name}</Heading>
+          </Flex.Item>
+          <CloseButton placement="end" offset="small" screenReaderLabel="Close" onClick={onClose} />
         </Flex>
-        {item.creditHours != null && (
-          <Flex alignItems="center" gap="xx-small" margin="0 0 xx-small 0">
+      </Modal.Header>
+      <Modal.Body>
+        <View as="div" margin="0 0 small 0">
+          <TypeTag item={item} />
+        </View>
+        <View as="div" margin="0 0 x-small 0">
+          <Text size="medium">{item.institution}</Text>
+        </View>
+        <Flex alignItems="center" gap="xx-small" margin="0 0 x-small 0">
+          <IconCalendarMonthLine size="x-small" color="secondary" />
+          <Text size="small" color="secondary">Completion date: {item.completionDate}</Text>
+        </Flex>
+        {showCredit && item.creditHours != null && (
+          <Flex alignItems="center" gap="xx-small" margin="0 0 x-small 0">
             <IconClockLine size="x-small" color="secondary" />
-            <Text size="x-small" color="secondary">{item.creditHours} credit hours</Text>
+            <Text size="small" color="secondary">{item.creditHours} credit hours</Text>
           </Flex>
         )}
-        {item.proficiencyLevel && (
+        {showProficiency && item.proficiencyLevel && (
           <Flex alignItems="center" gap="xx-small">
             <IconArrowOpenUpLine size="x-small" style={{ color: '#1A6633' }} />
-            <Text size="x-small" style={{ color: '#1A6633' }}>{item.proficiencyLevel}</Text>
+            <Text size="small" style={{ color: '#1A6633' }}>{item.proficiencyLevel}</Text>
           </Flex>
         )}
+      </Modal.Body>
+      <Modal.Footer>
+        <Button color="primary" onClick={onClose}>Close</Button>
+      </Modal.Footer>
+    </Modal>
+  )
+}
+
+function CompletionCard({ item }) {
+  const [modalOpen, setModalOpen] = useState(false)
+  const showCredit = item.type === 'Program completion' || item.type === 'Course completion'
+  const showProficiency = item.type === 'Outcome mastery'
+
+  return (
+    <>
+      <View
+        as="div"
+        background="primary"
+        borderWidth="small"
+        borderColor="primary"
+        borderRadius="medium"
+        padding="medium"
+        onClick={() => setModalOpen(true)}
+        style={{ cursor: 'pointer' }}
+      >
+        <View as="div" margin="0 0 x-small 0">
+          <TypeTag item={item} />
+        </View>
+        <Text weight="bold" size="small" as="div" lineHeight="condensed">{item.name}</Text>
+        <View as="div" margin="xx-small 0 0 0">
+          <Text size="x-small" color="secondary">{item.institution}</Text>
+        </View>
+        <View as="div" margin="x-small 0 0 0">
+          <Flex alignItems="center" gap="xx-small" margin="0 0 xx-small 0">
+            <IconCalendarMonthLine size="x-small" color="secondary" />
+            <Text size="x-small" color="secondary">Completion date: {item.completionDate}</Text>
+          </Flex>
+          {showCredit && item.creditHours != null && (
+            <Flex alignItems="center" gap="xx-small" margin="0 0 xx-small 0">
+              <IconClockLine size="x-small" color="secondary" />
+              <Text size="x-small" color="secondary">{item.creditHours} credit hours</Text>
+            </Flex>
+          )}
+          {showProficiency && item.proficiencyLevel && (
+            <Flex alignItems="center" gap="xx-small">
+              <IconArrowOpenUpLine size="x-small" style={{ color: '#1A6633' }} />
+              <Text size="x-small" style={{ color: '#1A6633' }}>{item.proficiencyLevel}</Text>
+            </Flex>
+          )}
+        </View>
       </View>
-    </View>
+
+      {modalOpen && (
+        <CompletionModal item={item} onClose={() => setModalOpen(false)} />
+      )}
+    </>
   )
 }
 
