@@ -14,6 +14,7 @@ import PortfolioLinksBlock from './components/PortfolioLinksBlock'
 import AppliedSection from './components/AppliedSection'
 import OpportunitiesSection from './components/OpportunitiesSection'
 import AddBlockFooter from './components/AddBlockFooter'
+import EmptyBlock from './components/EmptyBlock'
 import {
   learner,
   recordDetail,
@@ -30,8 +31,33 @@ import {
   matchingOpportunities,
 } from './data/mariaReyes'
 
+const DEFAULT_BLOCK_NAMES = {
+  'Credential block':        'New credential section',
+  'Skills':                  'New skills block',
+  'Rich text':               'New rich text block',
+  'Learning achievements':   'New learning achievements block',
+  'Coursework & artifacts':  'New coursework & artifacts block',
+  'Work history':            'New work history block',
+  'Portfolio links':         'New portfolio links block',
+}
+
+let blockIdCounter = 0
+
 export default function App() {
   const [activeTabIndex, setActiveTabIndex] = useState(0)
+  const [addedBlocks, setAddedBlocks] = useState([])
+
+  function addBlock(type) {
+    blockIdCounter += 1
+    setAddedBlocks(blocks => [
+      ...blocks,
+      { id: `added-${blockIdCounter}`, name: DEFAULT_BLOCK_NAMES[type] || `New ${type} block` },
+    ])
+  }
+
+  function removeBlock(id) {
+    setAddedBlocks(blocks => blocks.filter(b => b.id !== id))
+  }
 
   return (
     <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
@@ -80,7 +106,14 @@ export default function App() {
                     <OpportunitiesSection opportunities={matchingOpportunities} />
                   </div>
                 </div>
-                <AddBlockFooter />
+                {addedBlocks.map(block => (
+                  <EmptyBlock
+                    key={block.id}
+                    defaultName={block.name}
+                    onDelete={() => removeBlock(block.id)}
+                  />
+                ))}
+                <AddBlockFooter onAddBlock={addBlock} />
               </div>
             </Tabs.Panel>
             <Tabs.Panel renderTitle="Access control" isSelected={activeTabIndex === 1} padding="none">

@@ -10,7 +10,7 @@ const BLOCK_TYPES = [
   'Portfolio links',
 ]
 
-export default function AddBlockFooter() {
+export default function AddBlockFooter({ onAddBlock }) {
   return (
     <div style={{
       border: '2px dashed #C7CDD1',
@@ -25,7 +25,7 @@ export default function AddBlockFooter() {
       </Text>
       <div style={{ marginTop: '16px', display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'center' }}>
         {BLOCK_TYPES.map(type => (
-          <Button key={type} color="secondary" size="small">
+          <Button key={type} color="secondary" size="small" onClick={() => onAddBlock?.(type)}>
             {type}
           </Button>
         ))}
