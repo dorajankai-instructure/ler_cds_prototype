@@ -4,7 +4,7 @@ const BLOCK_TYPES = [
   'Credential block',
   'Skills',
   'Rich text',
-  'Learner achievement',
+  'Learning achievements',
   'Coursework & artifacts',
   'Work history',
   'Portfolio links',

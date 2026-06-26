@@ -299,7 +299,7 @@ This record is targeted at healthcare administration roles where operational imp
 
 export const completions = {
   id: 'completions-1',
-  sectionName: 'Canvas coursework',
+  sectionName: 'Learning achievements',
   description: 'Completed programmes, courses, and outcomes from San José City College.',
   items: [
     {
