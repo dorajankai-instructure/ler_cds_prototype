@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Flex, IconButton, Text, TruncateText, View } from '@instructure/ui'
 import { IconEditLine, IconExternalLinkLine, IconTrashLine } from '@instructure/ui-icons'
 import SectionHeader from './SectionHeader'
+import ConfirmDeleteModal from './ConfirmDeleteModal'
 
 function TypeBadge({ type }) {
   return (
@@ -19,42 +20,64 @@ function TypeBadge({ type }) {
 
 function LinkCard({ entry }) {
   const [hovered, setHovered] = useState(false)
+  const [confirmOpen, setConfirmOpen] = useState(false)
+  const [deleted, setDeleted] = useState(false)
+
+  if (deleted) return null
 
   return (
-    <View
-      as="div"
-      background="primary"
-      borderWidth="small"
-      borderColor="primary"
-      borderRadius="medium"
-      padding="small medium"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      position="relative"
-    >
-      {hovered && (
-        <div style={{ position: 'absolute', top: '6px', right: '6px', display: 'flex', gap: '2px' }}>
-          <IconButton renderIcon={IconEditLine} screenReaderLabel="Edit" size="small" withBackground={false} withBorder={false} />
-          <IconButton renderIcon={IconTrashLine} screenReaderLabel="Delete" size="small" withBackground={false} withBorder={false} />
+    <>
+      <View
+        as="div"
+        background="primary"
+        borderWidth="small"
+        borderColor="primary"
+        borderRadius="medium"
+        padding="small medium"
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        position="relative"
+      >
+        {hovered && (
+          <div style={{ position: 'absolute', top: '6px', right: '6px', display: 'flex', gap: '2px' }}>
+            <IconButton renderIcon={IconEditLine} screenReaderLabel="Edit" size="small" withBackground={false} withBorder={false} />
+            <IconButton
+              renderIcon={IconTrashLine}
+              screenReaderLabel="Delete"
+              size="small"
+              withBackground={false}
+              withBorder={false}
+              onClick={e => { e.stopPropagation(); setConfirmOpen(true) }}
+            />
+          </div>
+        )}
+        <TypeBadge type={entry.type} />
+        <Text weight="bold" size="small" as="div" lineHeight="condensed">{entry.title}</Text>
+        <div style={{ marginTop: '4px' }}>
+          <TruncateText>
+            <Text size="x-small" color="secondary">{entry.description}</Text>
+          </TruncateText>
         </div>
-      )}
-      <TypeBadge type={entry.type} />
-      <Text weight="bold" size="small" as="div" lineHeight="condensed">{entry.title}</Text>
-      <div style={{ marginTop: '4px' }}>
-        <TruncateText>
-          <Text size="x-small" color="secondary">{entry.description}</Text>
-        </TruncateText>
-      </div>
-      <div style={{ marginTop: '8px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-        <IconExternalLinkLine size="x-small" color="brand" />
-        <Text size="x-small" color="brand">View</Text>
-      </div>
-    </View>
+        <div style={{ marginTop: '8px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <IconExternalLinkLine size="x-small" color="brand" />
+          <Text size="x-small" color="brand">View</Text>
+        </div>
+      </View>
+
+      <ConfirmDeleteModal
+        open={confirmOpen}
+        onConfirm={() => { setConfirmOpen(false); setDeleted(true) }}
+        onCancel={() => setConfirmOpen(false)}
+      />
+    </>
   )
 }
 
 export default function PortfolioLinksBlock({ data }) {
   const [hovered, setHovered] = useState(false)
+  const [deleted, setDeleted] = useState(false)
+
+  if (deleted) return null
 
   return (
     <View
@@ -68,7 +91,7 @@ export default function PortfolioLinksBlock({ data }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <SectionHeader name={data.sectionName} hovered={hovered} />
+      <SectionHeader name={data.sectionName} hovered={hovered} onDelete={() => setDeleted(true)} />
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
         {data.entries.map(entry => (
           <LinkCard key={entry.id} entry={entry} />

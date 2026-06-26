@@ -58,6 +58,9 @@ function EvidenceCard({ item }) {
 
 export default function EvidenceBlock({ data }) {
   const [hovered, setHovered] = useState(false)
+  const [deleted, setDeleted] = useState(false)
+
+  if (deleted) return null
 
   return (
     <View
@@ -76,6 +79,7 @@ export default function EvidenceBlock({ data }) {
         description={data.description}
         hovered={hovered}
         showPlus
+        onDelete={() => setDeleted(true)}
       />
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
         {data.items.map(item => (

@@ -7,6 +7,7 @@ import {
   IconTrashLine,
 } from '@instructure/ui-icons'
 import SectionHeader from './SectionHeader'
+import ConfirmDeleteModal from './ConfirmDeleteModal'
 
 const TYPE_COLORS = {
   'Employment':   { bg: '#DBEAFE', border: '#1E40AF', text: '#1E40AF' },
@@ -16,7 +17,11 @@ const TYPE_COLORS = {
 
 function WorkEntry({ entry, isLast }) {
   const [hovered, setHovered] = useState(false)
+  const [confirmOpen, setConfirmOpen] = useState(false)
+  const [deleted, setDeleted] = useState(false)
   const c = TYPE_COLORS[entry.type] || { bg: '#F0F0F0', border: '#999', text: '#555' }
+
+  if (deleted) return null
 
   return (
     <>
@@ -30,7 +35,14 @@ function WorkEntry({ entry, isLast }) {
         {hovered && (
           <div style={{ position: 'absolute', top: 4, right: 0, display: 'flex', gap: '2px', zIndex: 1 }}>
             <IconButton renderIcon={IconEditLine} screenReaderLabel="Edit entry" size="small" withBackground={false} withBorder={false} />
-            <IconButton renderIcon={IconTrashLine} screenReaderLabel="Delete entry" size="small" withBackground={false} withBorder={false} />
+            <IconButton
+              renderIcon={IconTrashLine}
+              screenReaderLabel="Delete entry"
+              size="small"
+              withBackground={false}
+              withBorder={false}
+              onClick={e => { e.stopPropagation(); setConfirmOpen(true) }}
+            />
           </div>
         )}
 
@@ -65,12 +77,21 @@ function WorkEntry({ entry, isLast }) {
         )}
       </View>
       {!isLast && <View as="div" borderWidth="small 0 0 0" margin="medium 0" />}
+
+      <ConfirmDeleteModal
+        open={confirmOpen}
+        onConfirm={() => { setConfirmOpen(false); setDeleted(true) }}
+        onCancel={() => setConfirmOpen(false)}
+      />
     </>
   )
 }
 
 export default function WorkHistoryBlock({ data }) {
   const [hovered, setHovered] = useState(false)
+  const [deleted, setDeleted] = useState(false)
+
+  if (deleted) return null
 
   return (
     <View
@@ -84,7 +105,7 @@ export default function WorkHistoryBlock({ data }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <SectionHeader name={data.sectionName} hovered={hovered} />
+      <SectionHeader name={data.sectionName} hovered={hovered} onDelete={() => setDeleted(true)} />
       {data.entries.map((entry, i) => (
         <WorkEntry
           key={entry.id}

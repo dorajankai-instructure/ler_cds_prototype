@@ -82,6 +82,9 @@ function CredentialCard({ credential }) {
 
 export default function CredentialSection({ section }) {
   const [hovered, setHovered] = useState(false)
+  const [deleted, setDeleted] = useState(false)
+
+  if (deleted) return null
 
   return (
     <View
@@ -100,6 +103,7 @@ export default function CredentialSection({ section }) {
         description={section.description}
         hovered={hovered}
         showPlus
+        onDelete={() => setDeleted(true)}
       />
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>

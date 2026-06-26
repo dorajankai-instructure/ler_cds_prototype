@@ -6,6 +6,9 @@ import SkillModal from './SkillModal'
 export default function SkillsBlock({ skills }) {
   const [hovered, setHovered] = useState(false)
   const [activeSkill, setActiveSkill] = useState(null)
+  const [deleted, setDeleted] = useState(false)
+
+  if (deleted) return null
 
   return (
     <>
@@ -24,6 +27,7 @@ export default function SkillsBlock({ skills }) {
           name="Skills"
           description="Skills verified by credentials and self-reported skills."
           hovered={hovered}
+          onDelete={() => setDeleted(true)}
         />
 
         {/* Verified skills */}
