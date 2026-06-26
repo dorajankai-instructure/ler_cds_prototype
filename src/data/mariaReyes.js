@@ -5,6 +5,7 @@
 
 export const learner = {
   name: 'Maria Reyes',
+  email: 'maria.reyes@email.com',
   initials: 'MR',
   role: 'student',
   institution: 'California Community College System',
@@ -96,7 +97,16 @@ export const credentialSections = [
         title: 'Associate of Science, Health Sciences',
         issuer: 'San José City College',
         issuedDate: 'May 2024',
+        expiresDate: null,
         verified: true,
+        description:
+          'This Associate of Science degree in Health Sciences from San José City College builds a foundation in human anatomy, physiology, medical terminology, and the structure of the U.S. healthcare system. Graduates are prepared for entry-level allied health roles and for further study in healthcare administration and public health.',
+        criteria: [
+          'Completion of 60 transferable college credit hours',
+          'Minimum cumulative GPA of 2.0',
+          'Completion of core health sciences coursework',
+          'Fulfilment of general education requirements',
+        ],
       },
       {
         id: 'cred-2',
@@ -104,7 +114,16 @@ export const credentialSections = [
         title: 'Nursing Assistant Certificate',
         issuer: 'San José City College',
         issuedDate: 'December 2023',
+        expiresDate: 'December 2025',
         verified: true,
+        description:
+          'This certificate verifies completion of the California-approved Nursing Assistant Training Program at San José City College. Recipients have demonstrated competency in patient care fundamentals, clinical documentation, infection control, and communication with healthcare teams.',
+        criteria: [
+          'Completion of 60 hours clinical training',
+          'Passing written examination (minimum 70%)',
+          'Skills demonstration assessment',
+          'Background check clearance',
+        ],
       },
       {
         id: 'cred-3',
@@ -112,7 +131,16 @@ export const credentialSections = [
         title: 'Data Analysis for Healthcare',
         issuer: 'Coursera / Johns Hopkins University',
         issuedDate: 'March 2024',
+        expiresDate: null,
         verified: true,
+        description:
+          'This certificate verifies completion of the Data Analysis for Healthcare specialization offered by Johns Hopkins University through Coursera. The program covers healthcare data structures, statistical analysis methods, data visualization, and the interpretation of clinical and operational health datasets.',
+        criteria: [
+          'Completion of all graded course modules',
+          'Passing all module quizzes (minimum 80%)',
+          'Completion of an applied data analysis capstone project',
+          'Peer-reviewed final submission',
+        ],
       },
     ],
   },
@@ -127,7 +155,16 @@ export const credentialSections = [
         title: 'Health Information Systems',
         issuer: 'CA Workforce Development Board',
         issuedDate: 'August 2023',
+        expiresDate: null,
         verified: true,
+        description:
+          'This workforce badge recognises demonstrated proficiency in health information systems, including electronic health record (EHR) platforms, health data standards, and the secure handling of patient information in compliance with HIPAA.',
+        criteria: [
+          'Completion of the health information systems training module',
+          'Hands-on EHR platform assessment',
+          'HIPAA compliance knowledge check',
+          'Supervised practicum sign-off',
+        ],
       },
       {
         id: 'cred-5',
@@ -135,7 +172,16 @@ export const credentialSections = [
         title: 'Community Health Outreach',
         issuer: 'San José City College',
         issuedDate: 'January 2024',
+        expiresDate: null,
         verified: true,
+        description:
+          'This badge recognises verified participation and leadership in community health outreach programmes, including health education, screening events, and bilingual engagement with underserved populations across Santa Clara County.',
+        criteria: [
+          'Minimum 80 hours of documented outreach service',
+          'Completion of community health education training',
+          'Bilingual engagement competency',
+          'Program supervisor evaluation',
+        ],
       },
     ],
   },
