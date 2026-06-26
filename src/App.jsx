@@ -67,7 +67,7 @@ export default function App() {
           {/* Sticky white header area */}
           <div style={{
             background: 'white',
-            padding: '20px 32px 0',
+            padding: '20px 32px 16px',
             position: 'sticky',
             top: 0,
             zIndex: 10,
@@ -76,16 +76,15 @@ export default function App() {
             <RecordHeader recordDetail={recordDetail} />
           </div>
 
-          {/* Tabs + content */}
+          {/* Tabs + content — constrained to the content width */}
+          <div style={{ maxWidth: '1164px', padding: '0 32px', boxSizing: 'border-box' }}>
           <Tabs onRequestTabChange={(e, { index }) => setActiveTabIndex(index)}>
             <Tabs.Panel renderTitle="Record" isSelected={activeTabIndex === 0} padding="none">
               <div style={{
-                padding: '24px 32px 48px',
+                padding: '24px 0 48px',
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '8px',
-                maxWidth: '1164px',
-                boxSizing: 'border-box',
               }}>
                 <RecordGlance data={recordGlance} />
                 <AiSummaryBlock summary={aiSummary} />
@@ -117,11 +116,12 @@ export default function App() {
               </div>
             </Tabs.Panel>
             <Tabs.Panel renderTitle="Access control" isSelected={activeTabIndex === 1} padding="none">
-              <div style={{ padding: '48px 32px' }}>
+              <div style={{ padding: '48px 0' }}>
                 <Text color="secondary">Access control settings — coming soon.</Text>
               </div>
             </Tabs.Panel>
           </Tabs>
+          </div>
 
         </div>
       </div>

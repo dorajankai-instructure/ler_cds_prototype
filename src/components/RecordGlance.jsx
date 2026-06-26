@@ -1,4 +1,21 @@
-import { Flex, Metric, View } from '@instructure/ui'
+import { Flex, View } from '@instructure/ui'
+
+function Stat({ value, label }) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+      <div style={{ fontSize: '32px', fontWeight: 700, lineHeight: 1.1, color: '#2D3B45' }}>
+        {value}
+      </div>
+      <div style={{ fontSize: '13px', color: '#586874', marginTop: '2px' }}>
+        {label}
+      </div>
+    </div>
+  )
+}
+
+function StatDivider() {
+  return <div style={{ width: '1px', height: '40px', background: '#C7CDD1', flexShrink: 0 }} />
+}
 
 function DonutChart({ types }) {
   const total = types.reduce((sum, t) => sum + t.count, 0)
@@ -61,12 +78,15 @@ export default function RecordGlance({ data }) {
     >
       <Flex alignItems="center" justifyItems="space-between" gap="large">
         <Flex.Item shouldGrow>
-          <Flex gap="x-large" alignItems="center">
-            <Metric renderLabel="Credentials" renderValue={data.credentials} />
-            <Metric renderLabel="Skills" renderValue={data.skills} />
-            <Metric renderLabel="Achievements" renderValue={data.achievements} />
-            <Metric renderLabel="Employment" renderValue={data.employmentEntries} />
-          </Flex>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '28px' }}>
+            <Stat value={data.credentials} label="Credentials" />
+            <StatDivider />
+            <Stat value={data.skills} label="Skills" />
+            <StatDivider />
+            <Stat value={data.achievements} label="Achievements" />
+            <StatDivider />
+            <Stat value={data.employmentEntries} label="Employment" />
+          </div>
         </Flex.Item>
         <Flex.Item>
           <DonutChart types={contentTypes} />

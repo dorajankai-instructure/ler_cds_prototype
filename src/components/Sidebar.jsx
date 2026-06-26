@@ -1,4 +1,4 @@
-import { Avatar, Text } from '@instructure/ui'
+import { Avatar } from '@instructure/ui'
 import {
   IconDashboardLine,
   IconBookmarkLine,
@@ -15,8 +15,10 @@ const NAV_ITEMS = [
 ]
 
 const SIDEBAR_BG = '#1D354F'
-const ITEM_ACTIVE_BG = 'rgba(255,255,255,0.13)'
-const ITEM_HOVER_BG = 'rgba(255,255,255,0.07)'
+const ACTIVE_BORDER = '#0770A3'
+const ACTIVE_BG = 'rgba(255,255,255,0.10)'
+const TEXT_ACTIVE = '#FFFFFF'
+const TEXT_INACTIVE = 'rgba(255,255,255,0.78)'
 
 function NavItem({ icon: Icon, label, active }) {
   return (
@@ -25,34 +27,26 @@ function NavItem({ icon: Icon, label, active }) {
         display: 'flex',
         alignItems: 'center',
         gap: '12px',
-        padding: '0 12px',
+        padding: '0 16px',
         height: '44px',
-        borderRadius: '8px',
-        background: active ? ITEM_ACTIVE_BG : 'transparent',
+        background: active ? ACTIVE_BG : 'transparent',
+        borderLeft: `3px solid ${active ? ACTIVE_BORDER : 'transparent'}`,
         cursor: 'pointer',
-        position: 'relative',
         marginBottom: '2px',
+        color: active ? TEXT_ACTIVE : TEXT_INACTIVE,
       }}
     >
-      {active && (
-        <div style={{
-          position: 'absolute',
-          left: 0,
-          top: '8px',
-          bottom: '8px',
-          width: '3px',
-          background: 'white',
-          borderRadius: '0 2px 2px 0',
-        }} />
-      )}
-      <Icon color={active ? 'primary-inverse' : undefined} style={{ opacity: active ? 1 : 0.6, flexShrink: 0 }} />
-      <Text
-        size="small"
-        weight={active ? 'bold' : 'normal'}
-        style={{ color: active ? 'white' : 'rgba(255,255,255,0.65)', lineHeight: 1 }}
-      >
+      <span style={{ display: 'flex', flexShrink: 0, color: active ? TEXT_ACTIVE : TEXT_INACTIVE }}>
+        <Icon size="x-small" color="primary-inverse" style={{ opacity: active ? 1 : 0.85 }} />
+      </span>
+      <span style={{
+        fontSize: '0.875rem',
+        fontWeight: active ? 700 : 400,
+        color: active ? TEXT_ACTIVE : TEXT_INACTIVE,
+        lineHeight: 1,
+      }}>
         {label}
-      </Text>
+      </span>
     </div>
   )
 }
@@ -76,59 +70,62 @@ export default function Sidebar({ learner }) {
       <div style={{
         display: 'flex',
         alignItems: 'center',
-        gap: '10px',
-        padding: '16px 16px 12px',
-        marginBottom: '4px',
+        gap: '12px',
+        padding: '20px 16px 16px',
       }}>
-        <Avatar
-          name={learner.name}
-          size="small"
-          color="shamrock"
-        />
+        <Avatar name={learner.name} size="small" color="shamrock" />
         <div style={{ overflow: 'hidden' }}>
-          <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-            <Text size="small" weight="bold" style={{ color: 'white', lineHeight: 1.3 }}>
-              {learner.name}
-            </Text>
+          <div style={{
+            fontSize: '0.9375rem',
+            fontWeight: 700,
+            color: '#FFFFFF',
+            lineHeight: 1.3,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}>
+            {learner.name}
           </div>
-          <div>
-            <Text size="x-small" style={{ color: 'rgba(255,255,255,0.6)', lineHeight: 1.2, textTransform: 'capitalize' }}>
-              {learner.role}
-            </Text>
+          <div style={{
+            fontSize: '0.75rem',
+            color: 'rgba(255,255,255,0.65)',
+            lineHeight: 1.3,
+            textTransform: 'capitalize',
+          }}>
+            {learner.role}
           </div>
         </div>
       </div>
 
       {/* Nav items */}
-      <nav style={{ flex: 1, padding: '4px 8px' }}>
+      <nav style={{ flex: 1, padding: '8px 0' }}>
         {NAV_ITEMS.map(item => (
           <NavItem key={item.id} {...item} />
         ))}
       </nav>
 
-      {/* Collapse button */}
-      <div style={{ padding: '8px 8px 0' }}>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '10px',
-          padding: '0 12px',
-          height: '40px',
-          borderRadius: '8px',
-          cursor: 'pointer',
-          opacity: 0.6,
-        }}>
-          <IconArrowOpenStartLine style={{ flexShrink: 0 }} />
-          <Text size="small" style={{ color: 'rgba(255,255,255,0.6)' }}>Collapse sidebar</Text>
-        </div>
+      {/* Collapse link */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        padding: '0 16px',
+        height: '40px',
+        cursor: 'pointer',
+        color: 'rgba(255,255,255,0.6)',
+      }}>
+        <span style={{ display: 'flex', flexShrink: 0, color: 'rgba(255,255,255,0.6)' }}>
+          <IconArrowOpenStartLine size="x-small" color="primary-inverse" style={{ opacity: 0.6 }} />
+        </span>
+        <span style={{ fontSize: '0.8125rem', color: 'rgba(255,255,255,0.6)' }}>Collapse sidebar</span>
       </div>
 
       {/* Parchment logo */}
-      <div style={{ padding: '12px 16px 16px' }}>
+      <div style={{ padding: '12px 16px 20px' }}>
         <img
           src="/assets/parchment-logo-white.png"
           alt="Parchment"
-          style={{ height: '20px', display: 'block' }}
+          style={{ height: '22px', display: 'block' }}
           onError={e => { e.target.style.display = 'none' }}
         />
       </div>

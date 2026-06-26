@@ -70,7 +70,7 @@ export default function RecordHeader({ recordDetail }) {
       </View>
 
       {/* Actions row */}
-      <Flex gap="small" margin="0 0 small 0">
+      <Flex gap="small" margin="0">
         <Button color="primary" renderIcon={IconShareLine}>Share</Button>
         <Button color="secondary">Preview public view</Button>
         <Menu
