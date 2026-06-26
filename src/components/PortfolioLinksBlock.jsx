@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Flex, IconButton, Text, TruncateText, View } from '@instructure/ui'
+import { IconButton, Text, View } from '@instructure/ui'
 import { IconEditLine, IconExternalLinkLine, IconTrashLine } from '@instructure/ui-icons'
 import SectionHeader from './SectionHeader'
 import ConfirmDeleteModal from './ConfirmDeleteModal'
@@ -37,6 +37,7 @@ function LinkCard({ entry }) {
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         position="relative"
+        style={{ overflow: 'hidden', minWidth: 0 }}
       >
         {hovered && (
           <div style={{ position: 'absolute', top: '6px', right: '6px', display: 'flex', gap: '2px' }}>
@@ -52,11 +53,27 @@ function LinkCard({ entry }) {
           </div>
         )}
         <TypeBadge type={entry.type} />
-        <Text weight="bold" size="small" as="div" lineHeight="condensed">{entry.title}</Text>
-        <div style={{ marginTop: '4px' }}>
-          <TruncateText>
-            <Text size="x-small" color="secondary">{entry.description}</Text>
-          </TruncateText>
+        <div style={{
+          fontWeight: 700,
+          fontSize: '0.875rem',
+          lineHeight: 1.25,
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+        }}>
+          {entry.title}
+        </div>
+        <div style={{
+          marginTop: '4px',
+          fontSize: '0.75rem',
+          lineHeight: 1.4,
+          color: '#586874',
+          display: '-webkit-box',
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: 'vertical',
+          overflow: 'hidden',
+        }}>
+          {entry.description}
         </div>
         <div style={{ marginTop: '8px', display: 'flex', alignItems: 'center', gap: '4px' }}>
           <IconExternalLinkLine size="x-small" color="brand" />
@@ -90,9 +107,10 @@ export default function PortfolioLinksBlock({ data }) {
       padding="medium large"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      style={{ overflow: 'hidden' }}
     >
       <SectionHeader name={data.sectionName} hovered={hovered} onDelete={() => setDeleted(true)} />
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
         {data.entries.map(entry => (
           <LinkCard key={entry.id} entry={entry} />
         ))}
