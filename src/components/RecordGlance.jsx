@@ -17,7 +17,7 @@ function DonutChart({ types }) {
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-      <svg width="120" height="120" viewBox="0 0 120 120" role="img" aria-label="Credential type distribution">
+      <svg width="120" height="120" viewBox="0 0 120 120" role="img" aria-label="Content type distribution">
         <circle cx={cx} cy={cy} r={r} fill="none" stroke="#F0F0F0" strokeWidth="18" />
         <g transform={`rotate(-90, ${cx}, ${cy})`}>
           {segments.map(seg => (
@@ -37,19 +37,18 @@ function DonutChart({ types }) {
         <text x={cx} y={cy - 4} textAnchor="middle" fontSize="16" fontWeight="700" fill="#2D3748">{total}</text>
         <text x={cx} y={cy + 11} textAnchor="middle" fontSize="9" fill="#718096">total</text>
       </svg>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-        {types.map(type => (
-          <div key={type.label} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: type.color, flexShrink: 0 }} />
-            <Metric renderLabel={type.label} renderValue={type.count} isGroupChild />
-          </div>
-        ))}
-      </div>
     </div>
   )
 }
 
 export default function RecordGlance({ data }) {
+  const contentTypes = [
+    { label: 'Credentials',  count: data.credentials,       color: '#0770A3' },
+    { label: 'Skills',       count: data.skills,            color: '#27AE60' },
+    { label: 'Achievements', count: data.achievements,      color: '#D97706' },
+    { label: 'Employment',   count: data.employmentEntries, color: '#DC2626' },
+  ]
+
   return (
     <View
       as="div"
@@ -70,7 +69,7 @@ export default function RecordGlance({ data }) {
           </Flex>
         </Flex.Item>
         <Flex.Item>
-          <DonutChart types={data.credentialTypes} />
+          <DonutChart types={contentTypes} />
         </Flex.Item>
       </Flex>
     </View>
