@@ -189,7 +189,38 @@ export const credentialSections = [
 
 // ─── Skills ────────────────────────────────────────────────────────────────────
 
+// Default market-insights block, reused per skill with light variation. Every
+// verified skill carries its own copy so the Talent Neuron tray has realistic,
+// distinct numbers to render.
+function marketData({
+  hierarchy,
+  relatedSkills,
+  supply,
+  demand,
+  status,
+  difficultyScore,
+  difficultyLabel,
+  popularityChange,
+  median,
+  p25,
+  p75,
+  topJobTitles,
+}) {
+  return {
+    hierarchy,
+    relatedSkills,
+    supplyDemand: { supply, demand, status },
+    hiringDifficulty: { score: difficultyScore, max: 10, label: difficultyLabel },
+    popularity: { change: popularityChange, trend: 'up' },
+    salaryRange: { median, p25, p75 },
+    topJobTitles,
+  }
+}
+
 export const skills = {
+  // How verified skills are kept in sync with credentials. Surfaced in the
+  // skills section edit modal as a radio group.
+  syncMode: 'Automatic',
   verified: [
     {
       id: 'skill-1',
@@ -209,6 +240,26 @@ export const skills = {
           'Health Services Coordinator',
         ],
       },
+      market: marketData({
+        hierarchy: ['Healthcare', 'Clinical Operations', 'Care Delivery', 'Patient Care Coordination'],
+        relatedSkills: [
+          { name: 'Case Management', count: 1240 },
+          { name: 'Care Planning', count: 980 },
+          { name: 'Discharge Planning', count: 640 },
+          { name: 'Utilization Review', count: 410 },
+          { name: 'Patient Advocacy', count: 320 },
+        ],
+        supply: 38, demand: 66, status: 'Talent shortage',
+        difficultyScore: 7, difficultyLabel: 'High',
+        popularityChange: '+40%',
+        median: '$120k', p25: '$95k', p75: '$115k',
+        topJobTitles: [
+          { title: 'Care Coordinator', posts: 100 },
+          { title: 'Patient Services Manager', posts: 72 },
+          { title: 'Clinical Case Manager', posts: 58 },
+          { title: 'Health Services Coordinator', posts: 41 },
+        ],
+      }),
     },
     {
       id: 'skill-2',
@@ -224,6 +275,25 @@ export const skills = {
           'EHR Analyst',
         ],
       },
+      market: marketData({
+        hierarchy: ['Healthcare', 'Health Information', 'Records Management', 'Health Records Management'],
+        relatedSkills: [
+          { name: 'HIPAA Compliance', count: 1510 },
+          { name: 'EHR Systems', count: 1120 },
+          { name: 'Medical Coding', count: 870 },
+          { name: 'Data Governance', count: 390 },
+        ],
+        supply: 44, demand: 61, status: 'Talent shortage',
+        difficultyScore: 6, difficultyLabel: 'Moderate',
+        popularityChange: '+22%',
+        median: '$72k', p25: '$58k', p75: '$84k',
+        topJobTitles: [
+          { title: 'Health Information Technician', posts: 90 },
+          { title: 'Medical Records Specialist', posts: 64 },
+          { title: 'EHR Analyst', posts: 47 },
+          { title: 'HIM Coordinator', posts: 30 },
+        ],
+      }),
     },
     {
       id: 'skill-3',
@@ -239,6 +309,26 @@ export const skills = {
           'Health Systems Analyst',
         ],
       },
+      market: marketData({
+        hierarchy: ['Technology', 'Data & Analytics', 'Statistical Analysis', 'Data Analysis'],
+        relatedSkills: [
+          { name: 'SQL', count: 4820 },
+          { name: 'Data Visualization', count: 3110 },
+          { name: 'Python', count: 2940 },
+          { name: 'Statistical Modeling', count: 1650 },
+          { name: 'Tableau', count: 1280 },
+        ],
+        supply: 52, demand: 98, status: 'Severe talent shortage',
+        difficultyScore: 8, difficultyLabel: 'High',
+        popularityChange: '+61%',
+        median: '$98k', p25: '$76k', p75: '$124k',
+        topJobTitles: [
+          { title: 'Healthcare Data Analyst', posts: 100 },
+          { title: 'Business Intelligence Analyst', posts: 88 },
+          { title: 'Health Systems Analyst', posts: 67 },
+          { title: 'Reporting Analyst', posts: 45 },
+        ],
+      }),
     },
     {
       id: 'skill-4',
@@ -254,6 +344,25 @@ export const skills = {
           'Health Information Coordinator',
         ],
       },
+      market: marketData({
+        hierarchy: ['Healthcare', 'Clinical Foundations', 'Medical Language', 'Medical Terminology'],
+        relatedSkills: [
+          { name: 'ICD-10 Coding', count: 980 },
+          { name: 'CPT Coding', count: 740 },
+          { name: 'Anatomy & Physiology', count: 520 },
+          { name: 'Pharmacology', count: 310 },
+        ],
+        supply: 71, demand: 58, status: 'Balanced market',
+        difficultyScore: 4, difficultyLabel: 'Low',
+        popularityChange: '+9%',
+        median: '$54k', p25: '$44k', p75: '$63k',
+        topJobTitles: [
+          { title: 'Medical Coder', posts: 80 },
+          { title: 'Clinical Documentation Specialist', posts: 54 },
+          { title: 'Health Information Coordinator', posts: 38 },
+          { title: 'Medical Scribe', posts: 26 },
+        ],
+      }),
     },
     {
       id: 'skill-5',
@@ -269,6 +378,26 @@ export const skills = {
           'EHR Implementation Consultant',
         ],
       },
+      market: marketData({
+        hierarchy: ['Technology', 'Health IT', 'Clinical Systems', 'Health Information Systems'],
+        relatedSkills: [
+          { name: 'Epic Systems', count: 2210 },
+          { name: 'Cerner', count: 1430 },
+          { name: 'HL7 / FHIR', count: 760 },
+          { name: 'Clinical Informatics', count: 690 },
+          { name: 'Systems Integration', count: 480 },
+        ],
+        supply: 41, demand: 79, status: 'Talent shortage',
+        difficultyScore: 8, difficultyLabel: 'High',
+        popularityChange: '+47%',
+        median: '$88k', p25: '$69k', p75: '$108k',
+        topJobTitles: [
+          { title: 'Health IT Specialist', posts: 100 },
+          { title: 'Clinical Informatics Analyst', posts: 73 },
+          { title: 'EHR Implementation Consultant', posts: 55 },
+          { title: 'Systems Administrator', posts: 34 },
+        ],
+      }),
     },
     {
       id: 'skill-6',
@@ -284,6 +413,25 @@ export const skills = {
           'Public Health Coordinator',
         ],
       },
+      market: marketData({
+        hierarchy: ['Healthcare', 'Public Health', 'Community Programs', 'Community Health'],
+        relatedSkills: [
+          { name: 'Health Education', count: 870 },
+          { name: 'Program Outreach', count: 540 },
+          { name: 'Population Health', count: 460 },
+          { name: 'Social Services', count: 290 },
+        ],
+        supply: 63, demand: 57, status: 'Balanced market',
+        difficultyScore: 5, difficultyLabel: 'Moderate',
+        popularityChange: '+18%',
+        median: '$48k', p25: '$39k', p75: '$58k',
+        topJobTitles: [
+          { title: 'Community Health Worker', posts: 76 },
+          { title: 'Health Educator', posts: 52 },
+          { title: 'Public Health Coordinator', posts: 40 },
+          { title: 'Outreach Specialist', posts: 28 },
+        ],
+      }),
     },
     {
       id: 'skill-7',
@@ -295,6 +443,25 @@ export const skills = {
         marketDemand: 'High',
         relatedTitles: ['Care Planner', 'Case Manager', 'Clinical Care Coordinator'],
       },
+      market: marketData({
+        hierarchy: ['Healthcare', 'Clinical Operations', 'Care Delivery', 'Care Planning'],
+        relatedSkills: [
+          { name: 'Patient Care Coordination', count: 1180 },
+          { name: 'Case Management', count: 990 },
+          { name: 'Discharge Planning', count: 610 },
+          { name: 'Care Transitions', count: 350 },
+        ],
+        supply: 40, demand: 64, status: 'Talent shortage',
+        difficultyScore: 7, difficultyLabel: 'High',
+        popularityChange: '+33%',
+        median: '$68k', p25: '$55k', p75: '$80k',
+        topJobTitles: [
+          { title: 'Care Planner', posts: 84 },
+          { title: 'Case Manager', posts: 70 },
+          { title: 'Clinical Care Coordinator', posts: 49 },
+          { title: 'Care Transition Coach', posts: 31 },
+        ],
+      }),
     },
     {
       id: 'skill-8',
@@ -310,6 +477,25 @@ export const skills = {
           'Patient Records Coordinator',
         ],
       },
+      market: marketData({
+        hierarchy: ['Healthcare', 'Health Information', 'Clinical Records', 'Clinical Documentation'],
+        relatedSkills: [
+          { name: 'EHR Charting', count: 1340 },
+          { name: 'CDI', count: 720 },
+          { name: 'Medical Terminology', count: 680 },
+          { name: 'Coding Compliance', count: 420 },
+        ],
+        supply: 47, demand: 68, status: 'Talent shortage',
+        difficultyScore: 6, difficultyLabel: 'Moderate',
+        popularityChange: '+27%',
+        median: '$64k', p25: '$52k', p75: '$76k',
+        topJobTitles: [
+          { title: 'Clinical Documentation Specialist', posts: 92 },
+          { title: 'Medical Transcriptionist', posts: 48 },
+          { title: 'Patient Records Coordinator', posts: 39 },
+          { title: 'CDI Specialist', posts: 33 },
+        ],
+      }),
     },
     {
       id: 'skill-9',
@@ -325,6 +511,26 @@ export const skills = {
           'Community Liaison',
         ],
       },
+      market: marketData({
+        hierarchy: ['Healthcare', 'Public Health', 'Health Policy', 'Health Equity'],
+        relatedSkills: [
+          { name: 'Population Health', count: 760 },
+          { name: 'Social Determinants of Health', count: 540 },
+          { name: 'Community Engagement', count: 480 },
+          { name: 'Health Policy', count: 360 },
+          { name: 'Program Evaluation', count: 220 },
+        ],
+        supply: 36, demand: 71, status: 'Talent shortage',
+        difficultyScore: 8, difficultyLabel: 'High',
+        popularityChange: '+54%',
+        median: '$76k', p25: '$60k', p75: '$94k',
+        topJobTitles: [
+          { title: 'Health Equity Coordinator', posts: 88 },
+          { title: 'Public Health Specialist', posts: 61 },
+          { title: 'Community Liaison', posts: 44 },
+          { title: 'Policy Analyst', posts: 29 },
+        ],
+      }),
     },
   ],
   selfReported: [

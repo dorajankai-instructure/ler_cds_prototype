@@ -1,14 +1,29 @@
 import { useState } from 'react'
 import { Flex, Tag, Text, View } from '@instructure/ui'
 import SectionHeader from './SectionHeader'
-import SkillModal from './SkillModal'
+import SkillTray from './SkillTray'
+import SkillsEditModal from './SkillsEditModal'
+
+let selfReportedCounter = 0
 
 export default function SkillsBlock({ skills }) {
   const [hovered, setHovered] = useState(false)
   const [activeSkill, setActiveSkill] = useState(null)
   const [deleted, setDeleted] = useState(false)
+  const [editing, setEditing] = useState(false)
+  const [syncMode, setSyncMode] = useState(skills.syncMode || 'Automatic')
+  const [selfReported, setSelfReported] = useState(skills.selfReported)
 
   if (deleted) return null
+
+  function addSelfReported(name) {
+    selfReportedCounter += 1
+    setSelfReported(list => [...list, { id: `skill-sr-new-${selfReportedCounter}`, name }])
+  }
+
+  function removeSelfReported(id) {
+    setSelfReported(list => list.filter(s => s.id !== id))
+  }
 
   return (
     <>
@@ -27,6 +42,7 @@ export default function SkillsBlock({ skills }) {
           name="Skills"
           description="Skills verified by credentials and self-reported skills."
           hovered={hovered}
+          onEdit={() => setEditing(true)}
           onDelete={() => setDeleted(true)}
         />
 
@@ -60,7 +76,7 @@ export default function SkillsBlock({ skills }) {
             Self-added skills
           </Text>
           <Flex wrap="wrap" gap="x-small" margin="x-small 0 0 0">
-            {skills.selfReported.map(skill => (
+            {selfReported.map(skill => (
               <Tag
                 key={skill.id}
                 text={skill.name}
@@ -77,7 +93,18 @@ export default function SkillsBlock({ skills }) {
       </View>
 
       {activeSkill && (
-        <SkillModal skill={activeSkill} onClose={() => setActiveSkill(null)} />
+        <SkillTray skill={activeSkill} onClose={() => setActiveSkill(null)} />
+      )}
+
+      {editing && (
+        <SkillsEditModal
+          syncMode={syncMode}
+          selfReported={selfReported}
+          onChangeSyncMode={setSyncMode}
+          onAddSelfReported={addSelfReported}
+          onRemoveSelfReported={removeSelfReported}
+          onClose={() => setEditing(false)}
+        />
       )}
     </>
   )

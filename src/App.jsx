@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { Tabs, Text, View } from '@instructure/ui'
 import Sidebar from './components/Sidebar'
 import RecordHeader from './components/RecordHeader'
@@ -88,10 +88,13 @@ export default function App() {
               }}>
                 <RecordGlance data={recordGlance} />
                 <AiSummaryBlock summary={aiSummary} />
-                {credentialSections.map(section => (
-                  <CredentialSection key={section.id} section={section} />
+                {credentialSections.map((section, i) => (
+                  <Fragment key={section.id}>
+                    <CredentialSection section={section} />
+                    {/* Skills block sits right after the first credential section */}
+                    {i === 0 && <SkillsBlock skills={skills} />}
+                  </Fragment>
                 ))}
-                <SkillsBlock skills={skills} />
                 <RichTextBlock block={richTextBlock} />
                 <CompletionsBlock data={completions} />
                 <EvidenceBlock data={evidenceSection} />

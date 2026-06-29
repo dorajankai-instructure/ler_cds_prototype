@@ -3,7 +3,7 @@ import { Flex, Heading, IconButton, Text } from '@instructure/ui'
 import { IconEditLine, IconPlusLine, IconTrashLine } from '@instructure/ui-icons'
 import ConfirmDeleteModal from './ConfirmDeleteModal'
 
-export default function SectionHeader({ name, description, hovered, showPlus = false, onDelete }) {
+export default function SectionHeader({ name, description, hovered, showPlus = false, onDelete, onEdit }) {
   const [confirmOpen, setConfirmOpen] = useState(false)
 
   function handleDeleteClick(e) {
@@ -38,6 +38,7 @@ export default function SectionHeader({ name, description, hovered, showPlus = f
                 size="small"
                 withBackground={false}
                 withBorder={false}
+                onClick={onEdit ? (e => { e.stopPropagation(); onEdit() }) : undefined}
               />
               {showPlus && (
                 <IconButton

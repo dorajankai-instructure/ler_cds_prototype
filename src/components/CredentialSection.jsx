@@ -182,10 +182,14 @@ function EditableHeader({ section, hovered, onDelete }) {
   const containerRef = useRef(null)
 
   // Click / tab outside the edit area commits the changes and exits edit mode.
-  function handleBlur(e) {
-    if (containerRef.current && !containerRef.current.contains(e.relatedTarget)) {
-      setEditing(false)
-    }
+  // Defer to the next tick so focus has settled on its new target, then exit
+  // unless focus landed on another control inside the edit area.
+  function handleBlur() {
+    setTimeout(() => {
+      if (containerRef.current && !containerRef.current.contains(document.activeElement)) {
+        setEditing(false)
+      }
+    }, 0)
   }
 
   if (editing) {
