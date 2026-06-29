@@ -584,6 +584,33 @@ export const completions = {
       proficiencyLevel: 'Exceeds standard',
     },
   ],
+  // Candidate items the learner has earned but not yet added to this section.
+  availableItems: [
+    {
+      id: 'comp-a1',
+      type: 'Course completion',
+      name: 'Medical Office Administration',
+      institution: 'San José City College',
+      completionDate: 'October 2024',
+      creditHours: 3,
+    },
+    {
+      id: 'comp-a2',
+      type: 'Outcome mastery',
+      name: 'Patient confidentiality and HIPAA practices',
+      institution: 'San José City College',
+      completionDate: 'September 2024',
+      proficiencyLevel: 'Meets standard',
+    },
+    {
+      id: 'comp-a3',
+      type: 'Course completion',
+      name: 'Introduction to Public Health',
+      institution: 'San José City College',
+      completionDate: 'June 2024',
+      creditHours: 3,
+    },
+  ],
 }
 
 // ─── Coursework & artifacts (Evidence and Projects) ────────────────────────────
@@ -628,6 +655,36 @@ export const evidenceSection = {
       institution: 'San José City College',
       submissionDate: 'November 2024',
       source: 'Canvas',
+    },
+  ],
+  // Candidate items produced but not yet added to this section.
+  availableItems: [
+    {
+      id: 'ev-a1',
+      type: 'Assignment',
+      title: 'Infection Control Protocol Review',
+      courseName: 'Nursing Fundamentals',
+      institution: 'San José City College',
+      submissionDate: 'October 2023',
+      source: 'Canvas',
+    },
+    {
+      id: 'ev-a2',
+      type: 'Presentation',
+      title: 'Telehealth Adoption in Rural Clinics',
+      courseName: 'Healthcare Administration Fundamentals',
+      institution: 'San José City College',
+      submissionDate: 'March 2025',
+      source: 'Canvas',
+    },
+    {
+      id: 'ev-a3',
+      type: 'Portfolio item',
+      title: 'Volunteer Reflection — Mobile Health Clinic',
+      courseName: null,
+      institution: 'San José City College',
+      submissionDate: 'May 2025',
+      source: 'Canvas Portfolio',
     },
   ],
 }

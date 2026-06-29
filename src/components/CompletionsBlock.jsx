@@ -9,6 +9,7 @@ import {
   IconStarLine,
 } from '@instructure/ui-icons'
 import SectionHeader from './SectionHeader'
+import SectionItemsEditModal from './SectionItemsEditModal'
 
 const TYPE_COLORS = {
   'Program completion': { bg: '#E6F4EA', border: '#27AE60', text: '#1A6633', icon: '#27AE60' },
@@ -146,8 +147,23 @@ function CompletionCard({ item }) {
 export default function CompletionsBlock({ data }) {
   const [hovered, setHovered] = useState(false)
   const [deleted, setDeleted] = useState(false)
+  const [editing, setEditing] = useState(false)
+  const [name, setName] = useState(data.sectionName)
+  const [description, setDescription] = useState(data.description || '')
+  const [items, setItems] = useState(data.items)
+  const [available, setAvailable] = useState(data.availableItems || [])
 
   if (deleted) return null
+
+  function addItem(item) {
+    setItems(list => [...list, item])
+    setAvailable(list => list.filter(i => i.id !== item.id))
+  }
+
+  function removeItem(item) {
+    setAvailable(list => [...list, item])
+    setItems(list => list.filter(i => i.id !== item.id))
+  }
 
   return (
     <View
@@ -162,17 +178,35 @@ export default function CompletionsBlock({ data }) {
       onMouseLeave={() => setHovered(false)}
     >
       <SectionHeader
-        name={data.sectionName}
-        description={data.description}
+        name={name}
+        description={description}
         hovered={hovered}
         showPlus
+        onEdit={() => setEditing(true)}
         onDelete={() => setDeleted(true)}
       />
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
-        {data.items.map(item => (
+        {items.map(item => (
           <CompletionCard key={item.id} item={item} />
         ))}
       </div>
+
+      {editing && (
+        <SectionItemsEditModal
+          heading="Edit learning achievements"
+          name={name}
+          description={description}
+          inItems={items}
+          availableItems={available}
+          getLabel={item => item.name}
+          getMeta={item => `${item.type} · ${item.institution}`}
+          onChangeName={setName}
+          onChangeDescription={setDescription}
+          onAddItem={addItem}
+          onRemoveItem={removeItem}
+          onClose={() => setEditing(false)}
+        />
+      )}
     </View>
   )
 }
