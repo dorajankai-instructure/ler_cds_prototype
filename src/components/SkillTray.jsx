@@ -144,6 +144,25 @@ export default function SkillTray({ skill, onClose }) {
   if (!skill) return null
   const m = skill.market
 
+  if (!m) {
+    return (
+      <Tray open onDismiss={onClose} placement="end" size="large" label={skill.name} shouldCloseOnDocumentClick>
+        <View as="div" padding="medium large">
+          <Flex alignItems="start" margin="0 0 small 0">
+            <Flex.Item shouldGrow>
+              <Heading level="h1" margin="0">{skill.name}</Heading>
+              <Text color="secondary">Explore market labor data related to this skill.</Text>
+            </Flex.Item>
+            <CloseButton placement="end" offset="small" screenReaderLabel="Close" onClick={onClose} />
+          </Flex>
+          <View as="div" margin="large 0 0 0">
+            <Text color="secondary">Market labor data isn't available for this skill yet.</Text>
+          </View>
+        </View>
+      </Tray>
+    )
+  }
+
   return (
     <Tray
       open

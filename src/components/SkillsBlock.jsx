@@ -4,25 +4,24 @@ import SectionHeader from './SectionHeader'
 import SkillTray from './SkillTray'
 import SkillsEditModal from './SkillsEditModal'
 
-let selfReportedCounter = 0
+// Map the stored sync mode onto the edit modal's internal mode values.
+const MODE_FROM_SYNC = { Automatic: 'automatic', 'AI suggested': 'ai', Manual: 'manual' }
 
 export default function SkillsBlock({ skills, autoEdit = false, onDelete }) {
   const [hovered, setHovered] = useState(false)
   const [activeSkill, setActiveSkill] = useState(null)
   const [deleted, setDeleted] = useState(false)
   const [editing, setEditing] = useState(autoEdit)
-  const [syncMode, setSyncMode] = useState(skills.syncMode || 'Automatic')
-  const [selfReported, setSelfReported] = useState(skills.selfReported || [])
+  const [mode, setMode] = useState(MODE_FROM_SYNC[skills.syncMode] || 'automatic')
+  const [verified, setVerified] = useState(skills.verified)
+  const selfReported = skills.selfReported || []
 
   if (deleted) return null
 
-  function addSelfReported(name) {
-    selfReportedCounter += 1
-    setSelfReported(list => [...list, { id: `skill-sr-new-${selfReportedCounter}`, name }])
-  }
-
-  function removeSelfReported(id) {
-    setSelfReported(list => list.filter(s => s.id !== id))
+  function handleSave({ mode: nextMode, skills: nextSkills }) {
+    setMode(nextMode)
+    setVerified(nextSkills)
+    setEditing(false)
   }
 
   return (
@@ -52,7 +51,7 @@ export default function SkillsBlock({ skills, autoEdit = false, onDelete }) {
             Verified skills
           </Text>
           <Flex wrap="wrap" gap="x-small" margin="x-small 0 0 0">
-            {skills.verified.map(skill => (
+            {verified.map(skill => (
               <Tag
                 key={skill.id}
                 text={`✓ ${skill.name}`}
@@ -98,11 +97,10 @@ export default function SkillsBlock({ skills, autoEdit = false, onDelete }) {
 
       {editing && (
         <SkillsEditModal
-          syncMode={syncMode}
-          selfReported={selfReported}
-          onChangeSyncMode={setSyncMode}
-          onAddSelfReported={addSelfReported}
-          onRemoveSelfReported={removeSelfReported}
+          initialMode={mode}
+          allVerified={skills.verified}
+          current={verified}
+          onSave={handleSave}
           onClose={() => setEditing(false)}
         />
       )}
