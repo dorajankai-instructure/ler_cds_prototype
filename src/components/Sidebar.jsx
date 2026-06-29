@@ -1,4 +1,4 @@
-import { Avatar } from '@instructure/ui'
+import { Avatar, Text } from '@instructure/ui'
 import {
   IconDashboardLine,
   IconBookmarkLine,
@@ -39,14 +39,9 @@ function NavItem({ icon: Icon, label, active }) {
       <span style={{ display: 'flex', flexShrink: 0, color: active ? TEXT_ACTIVE : TEXT_INACTIVE }}>
         <Icon size="x-small" color="primary-inverse" style={{ opacity: active ? 1 : 0.85 }} />
       </span>
-      <span style={{
-        fontSize: '0.875rem',
-        fontWeight: active ? 700 : 400,
-        color: active ? TEXT_ACTIVE : TEXT_INACTIVE,
-        lineHeight: 1,
-      }}>
+      <Text size="medium" color={active ? 'primary-inverse' : 'secondary-inverse'}>
         {label}
-      </span>
+      </Text>
     </div>
   )
 }
@@ -76,23 +71,18 @@ export default function Sidebar({ learner }) {
         <Avatar name={learner.name} size="small" color="shamrock" />
         <div style={{ overflow: 'hidden' }}>
           <div style={{
-            fontSize: '0.9375rem',
-            fontWeight: 700,
-            color: '#FFFFFF',
-            lineHeight: 1.3,
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
           }}>
-            {learner.name}
+            <Text size="medium" weight="bold" color="primary-inverse">
+              {learner.name}
+            </Text>
           </div>
-          <div style={{
-            fontSize: '0.75rem',
-            color: 'rgba(255,255,255,0.65)',
-            lineHeight: 1.3,
-            textTransform: 'capitalize',
-          }}>
-            {learner.role}
+          <div style={{ textTransform: 'capitalize' }}>
+            <Text size="small" color="secondary-inverse">
+              {learner.role}
+            </Text>
           </div>
         </div>
       </div>
@@ -117,17 +107,12 @@ export default function Sidebar({ learner }) {
         <span style={{ display: 'flex', flexShrink: 0, color: 'rgba(255,255,255,0.6)' }}>
           <IconArrowOpenStartLine size="x-small" color="primary-inverse" style={{ opacity: 0.6 }} />
         </span>
-        <span style={{ fontSize: '0.8125rem', color: 'rgba(255,255,255,0.6)' }}>Collapse sidebar</span>
+        <Text size="small" color="secondary-inverse">Collapse sidebar</Text>
       </div>
 
       {/* Parchment logo */}
       <div style={{ padding: '12px 16px 20px' }}>
-        <img
-          src="/assets/parchment-logo-white.png"
-          alt="Parchment"
-          style={{ height: '22px', display: 'block' }}
-          onError={e => { e.target.style.display = 'none' }}
-        />
+        <Text size="small" weight="bold" color="primary-inverse">Parchment</Text>
       </div>
     </div>
   )
