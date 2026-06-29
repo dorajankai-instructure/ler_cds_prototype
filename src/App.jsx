@@ -124,7 +124,7 @@ export default function App() {
           </div>
         )}
         <Sidebar learner={learner} />
-        <div style={{ flex: 1, overflowY: 'auto', marginLeft: '276px', background: '#F5F5F5' }}>
+        <div style={{ flex: 1, overflowY: 'auto', marginLeft: '276px', background: '#F5F6F7' }}>
 
           {/* Sticky white header area */}
           <div style={{
@@ -146,7 +146,8 @@ export default function App() {
                 padding: '24px 0 48px',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '8px',
+                gap: '36px',
+                background: '#F5F6F7',
               }}>
                 <RecordGlance data={recordGlance} />
                 <AiSummaryBlock summary={aiSummary} />
