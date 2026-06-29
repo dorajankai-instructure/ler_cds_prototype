@@ -47,6 +47,7 @@ export default function SectionItemsEditModal({
   onAddItem,
   onRemoveItem,
   onClose,
+  autoFocusName = false,
 }) {
   return (
     <Modal open size="medium" label={heading} onDismiss={onClose} shouldCloseOnDocumentClick>
@@ -64,6 +65,7 @@ export default function SectionItemsEditModal({
           renderLabel="Section name"
           value={name}
           onChange={(e, value) => onChangeName(value)}
+          inputRef={el => { if (el && autoFocusName) el.focus() }}
         />
         <View as="div" margin="small 0 0 0">
           <TextInput

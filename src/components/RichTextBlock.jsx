@@ -3,9 +3,9 @@ import { Flex, Heading, IconButton, Text, TextArea, TextInput, View } from '@ins
 import { IconEditLine, IconTrashLine } from '@instructure/ui-icons'
 import ConfirmDeleteModal from './ConfirmDeleteModal'
 
-export default function RichTextBlock({ block }) {
+export default function RichTextBlock({ block, autoEdit = false, onDelete }) {
   const [hovered, setHovered] = useState(false)
-  const [editing, setEditing] = useState(false)
+  const [editing, setEditing] = useState(autoEdit)
   const [title, setTitle] = useState(block.title)
   const [text, setText] = useState(block.content)
   const [draftTitle, setDraftTitle] = useState(block.title)
@@ -13,6 +13,7 @@ export default function RichTextBlock({ block }) {
   const [confirmOpen, setConfirmOpen] = useState(false)
   const [deleted, setDeleted] = useState(false)
   const containerRef = useRef(null)
+  const titleFocusedRef = useRef(false)
 
   const paragraphs = text.split('\n\n').filter(Boolean)
 
@@ -59,6 +60,7 @@ export default function RichTextBlock({ block }) {
               renderLabel="Section title"
               value={draftTitle}
               onChange={(e, value) => setDraftTitle(value)}
+              inputRef={el => { if (el && autoEdit && !titleFocusedRef.current) { titleFocusedRef.current = true; el.focus() } }}
             />
             <View as="div" margin="small 0 0 0">
               <TextArea
@@ -110,7 +112,7 @@ export default function RichTextBlock({ block }) {
 
       <ConfirmDeleteModal
         open={confirmOpen}
-        onConfirm={() => { setConfirmOpen(false); setDeleted(true) }}
+        onConfirm={() => { setConfirmOpen(false); if (onDelete) onDelete(); else setDeleted(true) }}
         onCancel={() => setConfirmOpen(false)}
       />
     </>

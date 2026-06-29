@@ -187,6 +187,59 @@ export const credentialSections = [
   },
 ]
 
+// Verified credentials the learner holds but has not filed into a section yet.
+// Used as the "Available to add" pool when picking credentials for a section.
+export const availableCredentials = [
+  {
+    id: 'cred-av-1',
+    type: 'Certificate',
+    title: 'CPR and First Aid Certification',
+    issuer: 'American Red Cross',
+    issuedDate: 'June 2023',
+    expiresDate: 'June 2025',
+    verified: true,
+    description:
+      'Certification in cardiopulmonary resuscitation and basic first aid, covering adult, child, and infant care, AED use, and emergency response.',
+    criteria: [
+      'Completion of in-person training session',
+      'Hands-on skills assessment',
+      'Passing written examination',
+    ],
+  },
+  {
+    id: 'cred-av-2',
+    type: 'Badge',
+    title: 'HIPAA Privacy and Security',
+    issuer: 'CA Workforce Development Board',
+    issuedDate: 'July 2023',
+    expiresDate: null,
+    verified: true,
+    description:
+      'Recognises understanding of patient privacy rules, data security safeguards, and breach response under the HIPAA Privacy and Security Rules.',
+    criteria: [
+      'Completion of HIPAA training module',
+      'Privacy and security knowledge check',
+      'Case-based scenario assessment',
+    ],
+  },
+  {
+    id: 'cred-av-3',
+    type: 'Certificate',
+    title: 'Medical Billing Fundamentals',
+    issuer: 'Coursera',
+    issuedDate: 'April 2024',
+    expiresDate: null,
+    verified: true,
+    description:
+      'Covers the medical billing cycle, insurance claim processing, coding basics, and reimbursement workflows in U.S. healthcare settings.',
+    criteria: [
+      'Completion of all graded modules',
+      'Passing module quizzes (minimum 80%)',
+      'Applied billing capstone exercise',
+    ],
+  },
+]
+
 // ─── Skills ────────────────────────────────────────────────────────────────────
 
 // Default market-insights block, reused per skill with light variation. Every

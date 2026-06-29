@@ -95,12 +95,12 @@ function EditRow({ entry, onRequestDelete }) {
 
 let linkCounter = 0
 
-export default function PortfolioLinksBlock({ data }) {
+export default function PortfolioLinksBlock({ data, autoEdit = false, onDelete }) {
   const [hovered, setHovered] = useState(false)
   const [deleted, setDeleted] = useState(false)
-  const [editing, setEditing] = useState(false)
+  const [editing, setEditing] = useState(autoEdit)
   const [entries, setEntries] = useState(data.entries)
-  const [addOpen, setAddOpen] = useState(false)
+  const [addOpen, setAddOpen] = useState(autoEdit)
   const [pendingDelete, setPendingDelete] = useState(null)
 
   if (deleted) return null
@@ -133,7 +133,7 @@ export default function PortfolioLinksBlock({ data }) {
         name={data.sectionName}
         hovered={hovered}
         onEdit={() => setEditing(v => !v)}
-        onDelete={() => setDeleted(true)}
+        onDelete={onDelete || (() => setDeleted(true))}
       />
 
       {editing ? (

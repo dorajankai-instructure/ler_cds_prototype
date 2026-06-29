@@ -21,6 +21,7 @@ import {
   IconTrashLine,
 } from '@instructure/ui-icons'
 import ConfirmDeleteModal from './ConfirmDeleteModal'
+import SectionItemsEditModal from './SectionItemsEditModal'
 import { learner } from '../data/mariaReyes'
 
 const TYPE_COLORS = {
@@ -174,10 +175,8 @@ function CredentialCard({ credential }) {
   )
 }
 
-function EditableHeader({ section, hovered, onDelete }) {
+function EditableHeader({ name, description, hovered, onChangeName, onChangeDescription, onAddCredentials, onDelete }) {
   const [editing, setEditing] = useState(false)
-  const [name, setName] = useState(section.name)
-  const [description, setDescription] = useState(section.description || '')
   const [confirmOpen, setConfirmOpen] = useState(false)
   const containerRef = useRef(null)
 
@@ -198,19 +197,19 @@ function EditableHeader({ section, hovered, onDelete }) {
         <TextInput
           renderLabel="Section title"
           value={name}
-          onChange={(e, value) => setName(value)}
+          onChange={(e, value) => onChangeName(value)}
         />
         <View as="div" margin="small 0 0 0">
           <TextInput
             renderLabel="Description (optional)"
             placeholder="Add a description"
             value={description}
-            onChange={(e, value) => setDescription(value)}
+            onChange={(e, value) => onChangeDescription(value)}
           />
         </View>
         {description && (
           <View as="div" margin="x-small 0 0 0">
-            <Link onClick={() => setDescription('')}>Remove description</Link>
+            <Link onClick={() => onChangeDescription('')}>Remove description</Link>
           </View>
         )}
       </div>
@@ -237,10 +236,11 @@ function EditableHeader({ section, hovered, onDelete }) {
               />
               <IconButton
                 renderIcon={IconPlusLine}
-                screenReaderLabel="Add item"
+                screenReaderLabel="Add credentials"
                 size="small"
                 withBackground={false}
                 withBorder={false}
+                onClick={onAddCredentials}
               />
               <IconButton
                 renderIcon={IconTrashLine}
@@ -264,11 +264,26 @@ function EditableHeader({ section, hovered, onDelete }) {
   )
 }
 
-export default function CredentialSection({ section }) {
+export default function CredentialSection({ section, autoEdit = false, onDelete, availablePool = [] }) {
   const [hovered, setHovered] = useState(false)
   const [deleted, setDeleted] = useState(false)
+  const [name, setName] = useState(section.name)
+  const [description, setDescription] = useState(section.description || '')
+  const [credentials, setCredentials] = useState(section.credentials)
+  const [available, setAvailable] = useState(availablePool)
+  const [pickerOpen, setPickerOpen] = useState(autoEdit)
 
   if (deleted) return null
+
+  function addCredential(item) {
+    setCredentials(list => [...list, item])
+    setAvailable(list => list.filter(i => i.id !== item.id))
+  }
+
+  function removeCredential(item) {
+    setAvailable(list => [...list, item])
+    setCredentials(list => list.filter(i => i.id !== item.id))
+  }
 
   return (
     <View
@@ -283,16 +298,38 @@ export default function CredentialSection({ section }) {
       onMouseLeave={() => setHovered(false)}
     >
       <EditableHeader
-        section={section}
+        name={name}
+        description={description}
         hovered={hovered}
-        onDelete={() => setDeleted(true)}
+        onChangeName={setName}
+        onChangeDescription={setDescription}
+        onAddCredentials={() => setPickerOpen(true)}
+        onDelete={onDelete || (() => setDeleted(true))}
       />
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
-        {section.credentials.map(cred => (
+        {credentials.map(cred => (
           <CredentialCard key={cred.id} credential={cred} />
         ))}
       </div>
+
+      {pickerOpen && (
+        <SectionItemsEditModal
+          heading="Edit credentials"
+          name={name}
+          description={description}
+          inItems={credentials}
+          availableItems={available}
+          getLabel={c => c.title}
+          getMeta={c => `${c.type} · ${c.issuer}`}
+          onChangeName={setName}
+          onChangeDescription={setDescription}
+          onAddItem={addCredential}
+          onRemoveItem={removeCredential}
+          onClose={() => setPickerOpen(false)}
+          autoFocusName={autoEdit}
+        />
+      )}
     </View>
   )
 }

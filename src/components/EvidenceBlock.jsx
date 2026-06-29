@@ -138,10 +138,10 @@ function EvidenceCard({ item }) {
   )
 }
 
-export default function EvidenceBlock({ data }) {
+export default function EvidenceBlock({ data, autoEdit = false, onDelete }) {
   const [hovered, setHovered] = useState(false)
   const [deleted, setDeleted] = useState(false)
-  const [editing, setEditing] = useState(false)
+  const [editing, setEditing] = useState(autoEdit)
   const [name, setName] = useState(data.sectionName)
   const [description, setDescription] = useState(data.description || '')
   const [items, setItems] = useState(data.items)
@@ -177,7 +177,7 @@ export default function EvidenceBlock({ data }) {
         hovered={hovered}
         showPlus
         onEdit={() => setEditing(true)}
-        onDelete={() => setDeleted(true)}
+        onDelete={onDelete || (() => setDeleted(true))}
       />
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
         {items.map(item => (
@@ -199,6 +199,7 @@ export default function EvidenceBlock({ data }) {
           onAddItem={addItem}
           onRemoveItem={removeItem}
           onClose={() => setEditing(false)}
+          autoFocusName={autoEdit}
         />
       )}
     </View>

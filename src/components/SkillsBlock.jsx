@@ -6,13 +6,13 @@ import SkillsEditModal from './SkillsEditModal'
 
 let selfReportedCounter = 0
 
-export default function SkillsBlock({ skills }) {
+export default function SkillsBlock({ skills, autoEdit = false, onDelete }) {
   const [hovered, setHovered] = useState(false)
   const [activeSkill, setActiveSkill] = useState(null)
   const [deleted, setDeleted] = useState(false)
-  const [editing, setEditing] = useState(false)
+  const [editing, setEditing] = useState(autoEdit)
   const [syncMode, setSyncMode] = useState(skills.syncMode || 'Automatic')
-  const [selfReported, setSelfReported] = useState(skills.selfReported)
+  const [selfReported, setSelfReported] = useState(skills.selfReported || [])
 
   if (deleted) return null
 
@@ -43,7 +43,7 @@ export default function SkillsBlock({ skills }) {
           description="Skills verified by credentials and self-reported skills."
           hovered={hovered}
           onEdit={() => setEditing(true)}
-          onDelete={() => setDeleted(true)}
+          onDelete={onDelete || (() => setDeleted(true))}
         />
 
         {/* Verified skills */}
